@@ -1,0 +1,29 @@
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql_db    
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+            
+    ports:
+      - "3306:3306"
+    volumes:
+    - mysql_data:/var/lib/mysql
+    
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin    
+    depends_on:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: rootpassword
+    ports:
+      - "9000:80"
+    # We can access container at port 9000
+    # docker will redirect request to port 80 of container
+    
+volumes:
+  mysql_data:
