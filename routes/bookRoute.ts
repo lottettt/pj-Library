@@ -1,5 +1,8 @@
-import express from 'express';
-import { getAllBooks } from '../services/bookService'
+import express, { Request, Response } from "express";
+import { 
+  getAllBooks,
+  searchBooksByTitle
+} from '../services/bookService'
 
 const router = express.Router();
 
@@ -8,10 +11,24 @@ router.get('/', async (req: Request, res: Response) => {
     const response = await getAllBooks();
     res.json(response);
     return;
-    } catch (error) {
-        res.status(400).send(error);
-        return;
-    }
+  } catch (error) {
+    res.status(400).send(error);
+    return;
+  }
 });
 
-export default router; 
+router.get('/search', async (req: Request, res: Response) => {
+  try {
+    const { title } = req.query;
+    if (!title || typeof title !== 'string') {
+      return res.status(400).json({ error: 'Title query param is required' });
+    }
+    const books = await searchBooksByTitle(title);
+    res.json(books);
+  } catch (error) {
+    res.status(400).send(error);
+    return;
+  }
+});
+
+export default router;

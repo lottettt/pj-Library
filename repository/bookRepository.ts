@@ -8,3 +8,17 @@ export function getAllBooks() {
     } 
   });
 }
+
+export function searchBooksByTitle(title: string) {
+  return prisma.book.findMany({
+    where: {
+      title: {
+        contains: title,
+        mode: 'insensitive',
+      },
+    },
+    include: { 
+      author: true 
+    }
+  });
+}
