@@ -2,7 +2,8 @@ import express, { Request, Response } from "express";
 import { 
   getAllBooks,
   searchBooksByTitle,
-  getBooksDueOnDate
+  getBooksDueOnDate,
+  getNotReturnedBooks
 } from '../services/bookService'
 
 const router = express.Router();
@@ -43,6 +44,11 @@ router.get('/due', async (req: Request, res: Response) => {
 
     res.json(booksDue);
     return;
+})
+
+router.get('/not-return', async (req: Request, res: Response) => {
+  const resp = await getNotReturnedBooks();
+  res.status(200).json(resp)
 })
 
 export default router;

@@ -37,3 +37,12 @@ export function getBookDueOnDate(start: Date, end: Date) {
     }
   })
 }
+
+export function getNotReturnedBooks() {
+  return prisma.book.findMany({
+    where: {
+      returnDate: null,
+    },
+  include: { book:true, number: true }
+})
+}

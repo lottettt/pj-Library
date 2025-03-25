@@ -16,3 +16,7 @@ export async function getBooksDueOnDate(date: Date) {
 
     return repo.getBookDueOnDate(start, end);
 }
+
+export async function getNotReturnedBooks() {
+    return repo.getNotReturnedBooks();
+}
