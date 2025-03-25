@@ -22,3 +22,18 @@ export function searchBooksByTitle(title: string) {
     }
   });
 }
+
+export function getBookDueOnDate(start: Date, end: Date) {
+  return prisma.book.findMany ({
+    where: {
+      dueDate: {
+        gte: start,
+        lte: end
+      }
+    },
+    include: {
+      author: true,
+      checkout: true
+    }
+  })
+}

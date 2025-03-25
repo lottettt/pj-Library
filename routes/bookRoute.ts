@@ -1,7 +1,8 @@
 import express, { Request, Response } from "express";
 import { 
   getAllBooks,
-  searchBooksByTitle
+  searchBooksByTitle,
+  getBooksDueOnDate
 } from '../services/bookService'
 
 const router = express.Router();
@@ -15,7 +16,7 @@ router.get('/', async (req: Request, res: Response) => {
     res.status(400).send(error);
     return;
   }
-});
+})
 
 router.get('/search', async (req: Request, res: Response) => {
   try {
@@ -29,6 +30,19 @@ router.get('/search', async (req: Request, res: Response) => {
     res.status(400).send(error);
     return;
   }
-});
+})
+
+router.get('/due', async (req: Request, res: Response) => {
+  const dates = req.query;
+  if (!dates || typeof dates !== 'string') {
+    res.status(400).json({ error: 'Date query param is required' });
+    return 
+  }
+    const dueDate = new Date(dates);
+    const booksDue = await getBooksDueOnDate(dueDate);
+
+    res.json(booksDue);
+    return;
+})
 
 export default router;
